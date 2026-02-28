@@ -1,5 +1,6 @@
 import json
-from typing import List
+import os
+from typing import List, Optional
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.output_parsers import PydanticOutputParser
@@ -13,7 +14,13 @@ from models import (
 
 
 class EntrevistadorAgente:
-    def __init__(self, api_key: str, model: str = "gpt-4"):
+    def __init__(self, api_key: Optional[str] = None, model: str = "gpt-4"):
+        if api_key is None:
+            api_key = os.environ.get("OPENAI_API_KEY", "")
+        if not api_key:
+            raise ValueError(
+                "API key de OpenAI no proporcionada. Configura OPENAI_API_KEY como variable de entorno o pásala como parámetro."
+            )
         self.llm = ChatOpenAI(model=model, api_key=api_key, temperature=0.7)
         self.parser = PydanticOutputParser(pydantic_object=EntrevistaOutput)
 
@@ -234,5 +241,5 @@ Responde en formato JSON con el siguiente esquema:
         )
 
 
-def crear_agente(api_key: str) -> EntrevistadorAgente:
+def crear_agente(api_key: Optional[str] = None) -> EntrevistadorAgente:
     return EntrevistadorAgente(api_key=api_key)

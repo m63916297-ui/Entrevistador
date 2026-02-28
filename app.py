@@ -1,7 +1,15 @@
 import streamlit as st
 import json
+import os
 from agente import crear_agente, EntrevistadorAgente
 from models import EntrevistaOutput, Nivel, Recomendacion
+
+
+def load_secrets():
+    """Carga la API key desde secrets de Streamlit Cloud o variables de entorno."""
+    if hasattr(st, "secrets") and "OPENAI_API_KEY" in st.secrets:
+        return st.secrets["OPENAI_API_KEY"]
+    return os.environ.get("OPENAI_API_KEY", "")
 
 
 st.set_page_config(
@@ -13,7 +21,7 @@ def inicializar_estado():
     if "resultado" not in st.session_state:
         st.session_state.resultado = None
     if "api_key" not in st.session_state:
-        st.session_state.api_key = ""
+        st.session_state.api_key = load_secrets()
 
 
 def mostrar_formulario() -> tuple:
@@ -73,7 +81,8 @@ def mostrar_formulario() -> tuple:
     api_key = st.text_input(
         "API Key de OpenAI",
         type="password",
-        help="Ingresa tu API key de OpenAI para usar el agente",
+        value=st.session_state.api_key,
+        help="Ingresa tu API key de OpenAI o configúrala en los secrets de Streamlit Cloud",
     )
 
     return rol, nivel, stack, api_key

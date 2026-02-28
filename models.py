@@ -11,7 +11,7 @@ class Nivel(str, Enum):
 
 class Recomendacion(str, Enum):
     NO_CUMPLE = "No cumple"
-    CUMPLE = " Cumple"
+    CUMPLE = "Cumple"
     SOBRECUALIFICADO = "Sobrecualificado"
 
 
