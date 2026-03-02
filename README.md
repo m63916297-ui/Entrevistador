@@ -227,11 +227,3 @@ entrevistador/
 - **Streamlit Secrets**: Recomendado para producción
 - **Logs**: Evitar registrar información sensible
 
-## Extensiones Futuras
-
-- Integración con entrevistas reales (no simuladas)
-- Historial de entrevistas por candidato
-- Exportación a PDF
-- Múltiples idiomas
-- Evaluación de soft skills
-- Integración con ATS (Applicant Tracking Systems)
